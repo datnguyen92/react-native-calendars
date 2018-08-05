@@ -20,7 +20,8 @@ class Day extends Component {
     marking: PropTypes.any,
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
-    date: PropTypes.object
+    date: PropTypes.object,
+    underlineConfig: PropTypes.object,
   };
 
   constructor(props) {
@@ -71,7 +72,7 @@ class Day extends Component {
         containerStyle.push({backgroundColor: marking.selectedColor});
       }
     } else if (typeof marking.disabled !== 'undefined' ? marking.disabled : this.props.state === 'disabled') {
-      textStyle.push(this.style.disabledText);
+      // textStyle.push(this.style.disabledText);
     } else if (this.props.state === 'today') {
       containerStyle.push(this.style.today);
       textStyle.push(this.style.todayText);
@@ -82,8 +83,23 @@ class Day extends Component {
         onPress={this.onDayPress}
         onLongPress={this.onDayLongPress}>
         <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
-        <View style={{flexDirection: 'row'}}>{dot}</View>
+        { this.renderUnderline(marking) }
+        <View style={{flexDirection: 'row', marginTop: 1}}>{dot}</View>
       </TouchableOpacity>
+    );
+  }
+
+  renderUnderline(marking) {
+    const { underlineConfig } = marking || {};
+    const { underlineColor } = underlineConfig || {};
+
+    return (
+      <View style={{
+        width: '50%',
+        height: 3,
+        backgroundColor: underlineColor || 'transparent',
+        marginTop: 1,
+      }} />
     );
   }
 }
