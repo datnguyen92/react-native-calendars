@@ -24,6 +24,8 @@ const EmptyArray = [];
 
 class Calendar extends Component {
   static propTypes = {
+    highlightDates: PropTypes.object,
+
     // Specify theme properties to override specific styles for calendar parts. Default = {}
     theme: PropTypes.object,
     // Collection of dates that have to be marked. Default = {}
@@ -173,6 +175,7 @@ class Calendar extends Component {
 
     const DayComp = this.getDayComponent();
     const date = day.getDate();
+    const highlighting = this.getDateHighlighting(day);
     return (
       <View style={{flex: 1, alignItems: 'center'}} key={id}>
         <DayComp
@@ -182,6 +185,7 @@ class Calendar extends Component {
           onLongPress={this.longPressDay}
           date={xdateToData(day)}
           marking={this.getDateMarking(day)}
+          highlighting={highlighting}
         >
           {date}
         </DayComp>
@@ -270,6 +274,19 @@ class Calendar extends Component {
         />
         <View style={this.style.monthView}>{weeks}</View>
       </View>);
+  }
+
+  getDateHighlighting(day) {
+    const { highlightDates } = this.props;
+    if (!highlightDates) {
+      return null;
+    }
+    const dates = highlightDates[day.toString('yyyy-MM-dd')] || null;
+    if (dates) {
+      return dates;
+    } else {
+      return null;
+    }
   }
 }
 

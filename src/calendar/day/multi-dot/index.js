@@ -12,6 +12,7 @@ import styleConstructor from './style';
 
 class Day extends Component {
   static propTypes = {
+    highlighting: PropTypes.object,
     // TODO: disabled props should be removed
     state: PropTypes.oneOf(['disabled', 'today', '']),
 
@@ -40,7 +41,7 @@ class Day extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return shouldUpdate(this.props, nextProps, ['state', 'children', 'marking', 'onPress', 'onLongPress']);
+    return shouldUpdate(this.props, nextProps, ['state', 'children', 'marking', 'onPress', 'onLongPress', 'highlighting']);
   }
 
   renderDots(marking) {
@@ -77,6 +78,15 @@ class Day extends Component {
       containerStyle.push(this.style.today);
       textStyle.push(this.style.todayText);
     }
+
+    const highlighting = this.props.highlighting;
+    if (highlighting) {
+      textStyle.push({
+        color: highlighting.color,
+        fontWeight: 'bold',
+      })
+    }
+
     return (
       <TouchableOpacity
         style={containerStyle}
