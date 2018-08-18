@@ -24,6 +24,8 @@ const EmptyArray = [];
 
 class Calendar extends Component {
   static propTypes = {
+    highlightDates: PropTypes.object,
+
     // Specify theme properties to override specific styles for calendar parts. Default = {}
     theme: PropTypes.object,
     // Collection of dates that have to be marked. Default = {}
@@ -41,7 +43,7 @@ class Calendar extends Component {
     // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
     firstDay: PropTypes.number,
 
-    // Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple' 
+    // Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple'
     markingType: PropTypes.string,
 
     // Hide month navigation arrows. Default = false
@@ -75,7 +77,7 @@ class Calendar extends Component {
     // Handler which gets executed when press arrow icon left. It receive a callback can go back month
     onPressArrowLeft: PropTypes.func,
     // Handler which gets executed when press arrow icon left. It receive a callback can go next month
-    onPressArrowRight: PropTypes.func
+    onPressArrowRight: PropTypes.func,
   };
 
   constructor(props) {
@@ -88,7 +90,7 @@ class Calendar extends Component {
       currentMonth = XDate();
     }
     this.state = {
-      currentMonth
+      currentMonth,
     };
 
     this.updateMonth = this.updateMonth.bind(this);
@@ -99,10 +101,10 @@ class Calendar extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const current= parseDate(nextProps.current);
+    const current = parseDate(nextProps.current);
     if (current && current.toString('yyyy MM') !== this.state.currentMonth.toString('yyyy MM')) {
       this.setState({
-        currentMonth: current.clone()
+        currentMonth: current.clone(),
       });
     }
   }
@@ -112,7 +114,7 @@ class Calendar extends Component {
       return;
     }
     this.setState({
-      currentMonth: day.clone()
+      currentMonth: day.clone(),
     }, () => {
       if (!doNotTriggerListeners) {
         const currMont = this.state.currentMonth.clone();
@@ -176,6 +178,9 @@ class Calendar extends Component {
     } else {
       const DayComp = this.getDayComponent();
       const date = day.getDate();
+
+      const highlighting = this.getDateHighlighting(day);
+      // console.warn(highlighting);
       dayComp = (
         <DayComp
           key={id}
@@ -185,6 +190,7 @@ class Calendar extends Component {
           onLongPress={this.longPressDay}
           date={xdateToData(day)}
           marking={this.getDateMarking(day)}
+          highlighting={highlighting}
         >
           {date}
         </DayComp>
@@ -224,7 +230,7 @@ class Calendar extends Component {
     }
   }
 
-  renderWeekNumber (weekNumber) {
+  renderWeekNumber(weekNumber) {
     return <Day key={`week-${weekNumber}`} theme={this.props.theme} marking={{disableTouchEvent: true}} state='disabled'>{weekNumber}</Day>;
   }
 
@@ -274,6 +280,19 @@ class Calendar extends Component {
         />
         <View style={this.style.monthView}>{weeks}</View>
       </View>);
+  }
+
+  getDateHighlighting(day) {
+    const { highlightDates } = this.props;
+    if (!highlightDates) {
+      return null;
+    }
+    const dates = highlightDates[day.toString('yyyy-MM-dd')] || null;
+    if (dates) {
+      return dates;
+    } else {
+      return null;
+    }
   }
 }
 

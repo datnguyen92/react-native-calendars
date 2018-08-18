@@ -24,6 +24,7 @@ const viewPropTypes = ViewPropTypes || View.propTypes;
 
 export default class AgendaView extends Component {
   static propTypes = {
+    highlightDates: PropTypes.object,
     // Specify theme properties to override specific styles for calendar parts. Default = {}
     theme: PropTypes.object,
 
@@ -396,6 +397,7 @@ export default class AgendaView extends Component {
         <Animated.View style={headerStyle}>
           <Animated.View style={{flex:1, transform: [{ translateY: contentTranslate }]}}>
             <CalendarList
+              highlightDates={this.props.highlightDates}
               onLayout={() => {
                 this.calendar.scrollToDay(this.state.selectedDay.clone(), this.calendarOffset(), false);
               }}
