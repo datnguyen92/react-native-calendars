@@ -180,7 +180,7 @@ class Calendar extends Component {
       const date = day.getDate();
 
       const highlighting = this.getDateHighlighting(day);
-      // console.warn(highlighting);
+
       dayComp = (
         <DayComp
           key={id}
