@@ -12,7 +12,6 @@ import styleConstructor from './style';
 
 class Day extends Component {
   static propTypes = {
-    highlighting: PropTypes.object,
     // TODO: disabled props should be removed
     state: PropTypes.oneOf(['disabled', 'today', '']),
 
@@ -21,8 +20,7 @@ class Day extends Component {
     marking: PropTypes.any,
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
-    date: PropTypes.object,
-    underlineConfig: PropTypes.object,
+    date: PropTypes.object
   };
 
   constructor(props) {
@@ -41,7 +39,7 @@ class Day extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return shouldUpdate(this.props, nextProps, ['state', 'children', 'marking', 'onPress', 'onLongPress', 'highlighting']);
+    return shouldUpdate(this.props, nextProps, ['state', 'children', 'marking', 'onPress', 'onLongPress']);
   }
 
   renderDots(marking) {
@@ -66,14 +64,6 @@ class Day extends Component {
     const marking = this.props.marking || {};
     const dot = this.renderDots(marking);
 
-    const highlighting = this.props.highlighting;
-    if (highlighting) {
-      textStyle.push({
-        color: highlighting.color,
-        fontWeight: 'bold',
-      });
-    }
-
     if (marking.selected) {
       containerStyle.push(this.style.selected);
       textStyle.push(this.style.selectedText);
@@ -86,30 +76,14 @@ class Day extends Component {
       containerStyle.push(this.style.today);
       textStyle.push(this.style.todayText);
     }
-
     return (
       <TouchableOpacity
         style={containerStyle}
         onPress={this.onDayPress}
         onLongPress={this.onDayLongPress}>
         <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
-        { this.renderUnderline(marking) }
-        <View style={{flexDirection: 'row', marginTop: 1}}>{dot}</View>
+        <View style={{flexDirection: 'row'}}>{dot}</View>
       </TouchableOpacity>
-    );
-  }
-
-  renderUnderline(marking) {
-    const { underlineConfig } = marking || {};
-    const { underlineColor } = underlineConfig || {};
-
-    return (
-      <View style={{
-        width: '50%',
-        height: 3,
-        backgroundColor: underlineColor || 'transparent',
-        marginTop: 1,
-      }} />
     );
   }
 }
