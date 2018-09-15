@@ -77,7 +77,15 @@ function page(xd, firstDayOfWeek) {
     after = fromTo(days[days.length - 1], to);
   }
 
-  return before.concat(days.slice(1, days.length - 1), after);
+  const finalDays = before.concat(days.slice(1, days.length - 1), after);
+
+  if ((finalDays.length / 7) === 6) {
+    return finalDays;
+  } else {
+    const currentTo = to.clone();
+    const extradays = fromTo(currentTo.addDays(1), to.addDays(7));
+    return finalDays.concat(extradays);
+  }
 }
 
 module.exports = {
