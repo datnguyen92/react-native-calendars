@@ -66,6 +66,14 @@ class Day extends Component {
     const marking = this.props.marking || {};
     const dot = this.renderDots(marking);
 
+    const highlighting = this.props.highlighting;
+    if (highlighting) {
+      textStyle.push({
+        color: highlighting.color,
+        fontWeight: 'bold',
+      });
+    }
+
     if (marking.selected) {
       containerStyle.push(this.style.selected);
       textStyle.push(this.style.selectedText);
@@ -73,18 +81,10 @@ class Day extends Component {
         containerStyle.push({backgroundColor: marking.selectedColor});
       }
     } else if (typeof marking.disabled !== 'undefined' ? marking.disabled : this.props.state === 'disabled') {
-      // textStyle.push(this.style.disabledText);
+      textStyle.push(this.style.disabledText);
     } else if (this.props.state === 'today') {
       containerStyle.push(this.style.today);
       textStyle.push(this.style.todayText);
-    }
-
-    const highlighting = this.props.highlighting;
-    if (highlighting) {
-      textStyle.push({
-        color: highlighting.color,
-        fontWeight: 'bold',
-      })
     }
 
     return (
