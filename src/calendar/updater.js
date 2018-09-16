@@ -1,6 +1,10 @@
 import {parseDate} from '../interface';
 
 export default function shouldComponentUpdate(nextProps, nextState) {
+  if (nextProps.selectedDate !== this.props.selectedDate) {
+    return true;
+  }
+
   let shouldUpdate = (nextProps.selected || []).reduce((prev, next, i) => {
     const currentSelected = (this.props.selected || [])[i];
     if (!currentSelected || !next || parseDate(currentSelected).getTime() !== parseDate(next).getTime()) {
@@ -12,7 +16,7 @@ export default function shouldComponentUpdate(nextProps, nextState) {
     return prev;
   }, {update: false});
 
-  shouldUpdate = ['markedDates', 'hideExtraDays'].reduce((prev, next) => {
+  shouldUpdate = ['markedDates', 'hideExtraDays', 'highlightDates'].reduce((prev, next) => {
     if (!prev.update && nextProps[next] !== this.props[next]) {
       return {
         update: true,

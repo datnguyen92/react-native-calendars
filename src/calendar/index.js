@@ -25,6 +25,7 @@ const EmptyArray = [];
 class Calendar extends Component {
   static propTypes = {
     highlightDates: PropTypes.object,
+    selectedDate: PropTypes.string,
 
     // Specify theme properties to override specific styles for calendar parts. Default = {}
     theme: PropTypes.object,
@@ -186,6 +187,7 @@ class Calendar extends Component {
           date={xdateToData(day)}
           marking={this.getDateMarking(day)}
           highlighting={highlighting}
+          selectedDate={this.props.selectedDate}
         >
           {date}
         </DayComp>
