@@ -17,6 +17,9 @@ class CalendarList extends Component {
   static propTypes = {
     ...Calendar.propTypes,
 
+    // Triggered when month is changed and only if paging is enabled.
+    viewabilityConfig: PropTypes.object,
+
     // Max amount of months allowed to scroll to the past. Default = 50
     pastScrollRange: PropTypes.number,
 
@@ -219,6 +222,7 @@ class CalendarList extends Component {
         initialScrollIndex={this.state.openDate ? this.getMonthIndex(this.state.openDate) : false}
         getItemLayout={this.getItemLayout}
         scrollsToTop={this.props.scrollsToTop}
+        viewabilityConfig={this.props.viewabilityConfig}
       />
     );
   }
