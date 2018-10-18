@@ -16,7 +16,7 @@ import ReservationsList from './reservation-list';
 import styleConstructor from './style';
 import { VelocityTracker } from '../input';
 
-const HEADER_HEIGHT = 108;
+const HEADER_HEIGHT = 104;
 const KNOB_HEIGHT = 24;
 
 //Fallback when RN version is < 0.44
@@ -24,7 +24,6 @@ const viewPropTypes = ViewPropTypes || View.propTypes;
 
 export default class AgendaView extends Component {
   static propTypes = {
-    highlightDates: PropTypes.object,
     // Specify theme properties to override specific styles for calendar parts. Default = {}
     theme: PropTypes.object,
 
@@ -186,11 +185,6 @@ export default class AgendaView extends Component {
   }
 
   onVisibleMonthsChange(months) {
-    if (this.props.onVisibleMonthsChange) {
-      this.props.onVisibleMonthsChange(months);
-      return;
-    }
-
     if (this.props.items && !this.state.firstResevationLoad) {
       clearTimeout(this.scrollTimeout);
       this.scrollTimeout = setTimeout(() => {
@@ -397,7 +391,6 @@ export default class AgendaView extends Component {
         <Animated.View style={headerStyle}>
           <Animated.View style={{flex:1, transform: [{ translateY: contentTranslate }]}}>
             <CalendarList
-              highlightDates={this.props.highlightDates}
               onLayout={() => {
                 this.calendar.scrollToDay(this.state.selectedDay.clone(), this.calendarOffset(), false);
               }}
