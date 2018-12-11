@@ -154,7 +154,8 @@ class Day extends Component {
           backgroundColor: flags.startingDay.color
         };
         containerStyle.push({
-          backgroundColor: flags.startingDay.color
+          backgroundColor: flags.startingDay.color,
+          borderRadius: 17,
         });
       } else if (flags.endingDay && !flags.startingDay) {
         rightFillerStyle = {
@@ -164,7 +165,8 @@ class Day extends Component {
           backgroundColor: flags.endingDay.color
         };
         containerStyle.push({
-          backgroundColor: flags.endingDay.color
+          backgroundColor: flags.endingDay.color,
+          borderRadius: 17,
         });
       } else if (flags.day) {
         leftFillerStyle = {backgroundColor: flags.day.color};
